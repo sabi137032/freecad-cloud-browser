@@ -6,6 +6,15 @@ import sys
 import FreeCAD
 import FreeCADGui
 
+# --- Auto-install dependencies before anything else ---
+try:
+    from install_deps import ensure_dependencies
+    ensure_dependencies()
+except Exception as _dep_err:
+    FreeCAD.Console.PrintWarning(
+        f"[Cloud Browser] Dependency check failed: {_dep_err}\n"
+    )
+
 
 class CloudBrowserWorkbench(FreeCADGui.Workbench):
     """FreeCAD Cloud Browser Workbench - Browse and open files from cloud storage."""
