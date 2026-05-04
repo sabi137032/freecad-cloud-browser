@@ -1,31 +1,20 @@
 # FreeCAD Cloud Browser
 
-A FreeCAD workbench plugin that lets you browse and open files directly from cloud storage providers and remote servers, without leaving FreeCAD.
+A FreeCAD workbench plugin that lets you browse and open files directly from remote storage, without leaving FreeCAD.
 
 ## Supported Providers
 
 | Provider | Auth Method | Notes |
 |---|---|---|
-| Google Drive | OAuth2 (browser) | Requires Google Cloud OAuth credentials |
-| Dropbox | OAuth2 (browser) | Requires Dropbox App credentials |
-| OneDrive | OAuth2 (device code) | Requires Azure App registration |
-| Amazon S3 | Access Key + Secret | Also works with MinIO and S3-compatible storage |
+| S3 | Access Key + Secret | Works with Amazon S3, MinIO, Wasabi, Backblaze B2, and any S3-compatible storage |
 | FTP / FTPS / SFTP | Username + Password / SSH key | |
 | WebDAV | Basic / Digest Auth | Works with Nextcloud, ownCloud, etc. |
 
 ## Installation
 
-### 1. Install Python dependencies
+The recommended way is via the **FreeCAD Addon Manager** (Tools → Addon Manager). Dependencies are installed automatically.
 
-Inside FreeCAD's bundled Python (or the Python FreeCAD uses):
-
-```bash
-pip install -r requirements.txt
-```
-
-If you only need specific providers, install only their dependencies (see `requirements.txt` for per-provider packages).
-
-### 2. Install the plugin
+### Manual installation
 
 Copy the `freecad-cloud-browser` folder to your FreeCAD Mod directory:
 
@@ -35,9 +24,7 @@ Copy the `freecad-cloud-browser` folder to your FreeCAD Mod directory:
 | macOS | `~/Library/Preferences/FreeCAD/Mod/freecad-cloud-browser` |
 | Linux | `~/.local/share/FreeCAD/Mod/freecad-cloud-browser` |
 
-### 3. Restart FreeCAD
-
-The "Cloud Browser" workbench will appear in the workbench dropdown.
+Then restart FreeCAD. The "Cloud Browser" workbench will appear in the workbench dropdown.
 
 ## Usage
 
@@ -53,30 +40,17 @@ All formats natively supported by FreeCAD are shown:
 
 ## Provider Setup
 
-### Google Drive
+### S3
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com)
-2. Create a project → Enable the **Google Drive API**
-3. Create **OAuth 2.0 Credentials** (Desktop app type)
-4. Under **Authorized redirect URIs** add exactly: `http://localhost:8085`
-5. Copy the **Client ID** and **Client Secret** into the plugin dialog
+Use any S3-compatible storage provider (Amazon S3, MinIO, Wasabi, Backblaze B2, etc.).
 
-### Dropbox
+Provide:
+- **Endpoint URL** — leave blank for Amazon S3, or enter the custom endpoint (e.g. `https://s3.your-region.backblazeb2.com`)
+- **Bucket name**
+- **Access Key ID** and **Secret Access Key**
+- **Region** (required for Amazon S3, optional for others)
 
-1. Go to [Dropbox App Console](https://www.dropbox.com/developers/apps)
-2. Create a new app with **Full Dropbox** access
-3. Copy **App Key** and **App Secret**
-
-### OneDrive
-
-1. Go to [Azure Portal](https://portal.azure.com) → App registrations → New registration
-2. Set redirect URI to `https://login.microsoftonline.com/common/oauth2/nativeclient`
-3. Under **API permissions** add `Files.Read` and `Files.ReadWrite`
-4. Copy the **Application (Client) ID**
-
-### Amazon S3
-
-Use an IAM user with `s3:ListBucket`, `s3:GetObject`, and optionally `s3:PutObject` permissions on the target bucket.
+For Amazon S3, the IAM user needs at minimum: `s3:ListBucket`, `s3:GetObject`.
 
 ### FTP / SFTP
 
@@ -84,7 +58,7 @@ Enter host, port, username, and password (or SSH private key path for SFTP).
 
 ### WebDAV
 
-Works with any WebDAV server including Nextcloud, ownCloud, and generic WebDAV endpoints. Enter the full server URL including the DAV path.
+Works with any WebDAV server including Nextcloud, ownCloud, and generic WebDAV endpoints. Enter the full server URL including the DAV path (e.g. `https://cloud.example.com/remote.php/dav/files/username/`).
 
 ## Architecture
 
@@ -92,11 +66,9 @@ Works with any WebDAV server including Nextcloud, ownCloud, and generic WebDAV e
 freecad-cloud-browser/
 ├── InitGui.py                  # FreeCAD workbench registration
 ├── CloudBrowserWorkbench.py    # Commands and toolbar
+├── check_deps.py               # Dependency availability checker
 ├── providers/
 │   ├── base.py                 # Abstract CloudProvider base class
-│   ├── google_drive.py
-│   ├── dropbox.py
-│   ├── onedrive.py
 │   ├── s3.py
 │   ├── ftp.py
 │   └── webdav.py
@@ -113,7 +85,7 @@ freecad-cloud-browser/
 ## Configuration storage
 
 - Non-sensitive settings are stored in `<FreeCAD user dir>/CloudBrowser/config.json`
-- Sensitive credentials (tokens, passwords) are stored in the **system keychain** via `keyring` when available, or base64-encoded in the config file as a fallback
+- Sensitive credentials (passwords, keys) are stored in the **system keychain** via `keyring` when available, or encrypted via `cryptography` (Fernet) as a fallback
 
 ## License
 

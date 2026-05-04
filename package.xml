@@ -18,15 +18,12 @@
     <!--[ Info ]―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――-->
 
     <name>FreeCAD Cloud Browser</name>
-    <description>Browse and open files from cloud storage (Google Drive, Dropbox, OneDrive, Amazon S3, FTP/SFTP, WebDAV/Nextcloud) directly from FreeCAD — no manual download/upload needed. Supports OAuth2, access-key, and username/password authentication depending on the provider.</description>
+    <description>Browse and open files from S3-compatible storage (Amazon S3, MinIO, Wasabi, etc.), FTP/SFTP servers, and WebDAV/Nextcloud servers directly from FreeCAD — no manual download/upload needed. Supports access-key authentication for S3, username/password or SSH key for FTP/SFTP, and basic/digest auth for WebDAV.</description>
 
     <!--[ Tags ]―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――-->
 
     <tag>cloud</tag>
     <tag>storage</tag>
-    <tag>google-drive</tag>
-    <tag>dropbox</tag>
-    <tag>onedrive</tag>
     <tag>s3</tag>
     <tag>ftp</tag>
     <tag>sftp</tag>
@@ -69,18 +66,7 @@
     <!-- Core: always required -->
     <depend type = 'python'>requests</depend>
 
-    <!-- Google Drive -->
-    <depend type = 'python'>google-api-python-client</depend>
-    <depend type = 'python'>google-auth-httplib2</depend>
-    <depend type = 'python'>google-auth-oauthlib</depend>
-
-    <!-- Dropbox -->
-    <depend type = 'python'>dropbox</depend>
-
-    <!-- OneDrive -->
-    <depend type = 'python'>msal</depend>
-
-    <!-- Amazon S3 -->
+    <!-- S3-compatible storage -->
     <depend type = 'python'>boto3</depend>
 
     <!-- SFTP -->

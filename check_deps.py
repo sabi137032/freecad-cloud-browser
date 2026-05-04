@@ -11,17 +11,12 @@ import FreeCAD
 
 # Map: import_name -> (pip_name, required_for)
 _DEPS = {
-    "requests":             ("requests",                  "all providers"),
-    "googleapiclient":      ("google-api-python-client",  "Google Drive"),
-    "google_auth_httplib2": ("google-auth-httplib2",      "Google Drive"),
-    "google_auth_oauthlib": ("google-auth-oauthlib",      "Google Drive"),
-    "dropbox":              ("dropbox",                   "Dropbox"),
-    "msal":                 ("msal",                     "OneDrive"),
-    "boto3":                ("boto3",                    "Amazon S3"),
-    "paramiko":             ("paramiko",                 "SFTP"),
-    "webdav3":              ("webdavclient3",             "WebDAV/Nextcloud"),
-    "keyring":              ("keyring",                  "secure credential storage"),
-    "cryptography":         ("cryptography",             "encrypted credential fallback"),
+    "requests":    ("requests",      "all providers"),
+    "boto3":       ("boto3",         "S3"),
+    "paramiko":    ("paramiko",      "SFTP"),
+    "webdav3":     ("webdavclient3", "WebDAV/Nextcloud"),
+    "keyring":     ("keyring",       "secure credential storage"),
+    "cryptography":("cryptography",  "encrypted credential fallback"),
 }
 
 

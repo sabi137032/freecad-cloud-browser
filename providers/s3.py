@@ -1,5 +1,6 @@
 # providers/s3.py
-# Amazon S3 provider using boto3
+# S3 provider using boto3
+# Works with Amazon S3 and any S3-compatible storage (MinIO, Wasabi, Backblaze B2, etc.)
 
 import os
 import logging
@@ -11,10 +12,10 @@ logger = logging.getLogger(__name__)
 
 
 class S3Provider(CloudProvider):
-    """Amazon S3 cloud provider via boto3."""
+    """S3 cloud provider via boto3. Works with Amazon S3 and S3-compatible storage."""
 
     _PROVIDER_TYPE = "s3"
-    _DISPLAY_NAME = "Amazon S3"
+    _DISPLAY_NAME  = "S3"
 
     @property
     def provider_type(self) -> str:
